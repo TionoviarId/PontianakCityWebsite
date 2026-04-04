@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pesan Trip – Pontianak</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .visit-layout {
+      display: grid;
+      grid-template-columns: 1fr 360px;
+      gap: 3rem;
+      margin-top: 3rem;
+    }
+    .form-section { background: var(--white); }
+    .step-indicator {
+      display: flex;
+      gap: 0;
+      margin-bottom: 3rem;
+    }
+    .step {
+      flex: 1;
+      text-align: center;
+      position: relative;
+    }
+    .step::after {
+      content: '';
+      position: absolute;
+      top: 18px;
+      right: -50%;
+      width: 100%;
+      height: 2px;
+      background: rgba(46,74,56,0.15);
+    }
+    .step:last-child::after { display: none; }
+    .step .step-num {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: rgba(46,74,56,0.1);
+      color: var(--text-muted);
+      font-weight: 700;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 0.4rem;
+      position: relative;
+      z-index: 1;
+    }
+    .step.active .step-num { background: var(--primary); color: var(--dark); }
+    .step.done .step-num { background: var(--accent); color: var(--white); }
+    .step .step-label { font-size: 0.72rem; color: var(--text-muted); }
+    .step.active .step-label { color: var(--primary-dark); font-weight: 600; }
+
+    .form-group { margin-bottom: 1.5rem; }
+    .form-group label {
+      display: block;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--dark);
+      margin-bottom: 0.5rem;
+    }
+    .form-group input, .form-group select, .form-group textarea {
+      width: 100%;
+      padding: 0.85rem 1rem;
+      border: 1.5px solid rgba(46,74,56,0.18);
+      border-radius: 10px;
+      font-size: 0.9rem;
+      font-family: var(--font-body);
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.2s;
+      background: var(--white);
+    }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(200,134,10,0.1);
+    }
+
+    .counter-row { display: flex; align-items: center; gap: 1rem; }
+    .counter-btn {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(46,74,56,0.2);
+      background: transparent;
+      font-size: 1.2rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+    .counter-btn:hover { background: var(--primary); border-color: var(--primary); color: var(--dark); }
+    .counter-val { font-family: var(--font-display); font-size: 1.4rem; font-weight: 700; min-width: 30px; text-align: center; }
+
+    .type-options { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; }
+    .type-opt { position: relative; }
+    .type-opt input[type=radio] { display: none; }
+    .type-opt label {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 1rem;
+      border: 1.5px solid rgba(46,74,56,0.15);
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: var(--text);
+    }
+    .type-opt label .icon { font-size: 1.5rem; }
+    .type-opt input:checked + label {
+      border-color: var(--primary);
+      background: #fffaf0;
+      color: var(--primary-dark);
+      font-weight: 600;
+    }
+
+    .price-summary {
+      background: var(--dark);
+      border-radius: 20px;
+      padding: 2rem;
+      color: var(--white);
+      position: sticky;
+      top: 80px;
+    }
+    .price-summary h3 { font-family: var(--font-display); font-size: 1.1rem; margin-bottom: 1.5rem; }
+    .price-row { display: flex; justify-content: space-between; padding: 0.65rem 0; font-size: 0.84rem; }
+    .price-row:not(:last-child) { border-bottom: 1px solid rgba(253,250,244,0.08); }
+    .price-row .label { color: rgba(253,250,244,0.6); }
+    .price-row .val { font-weight: 600; color: var(--white); }
+    .price-total { margin-top: 1rem; padding-top: 1rem; border-top: 2px solid rgba(200,134,10,0.3); }
+    .price-total .val { font-family: var(--font-display); font-size: 1.4rem; color: var(--primary-light); font-weight: 900; }
+    .price-summary .btn { width: 100%; justify-content: center; margin-top: 1.5rem; }
+    .secure-note { font-size: 0.72rem; color: rgba(253,250,244,0.4); text-align: center; margin-top: 0.75rem; }
+
+    .price-row { display: flex; justify-content: space-between; padding: 0.65rem 0; font-size: 0.84rem; }
+    .price-row:not(:last-child) { border-bottom: 1px solid rgba(253,250,244,0.08); }
+    .price-row .label { color: rgba(253,250,244,0.6); }
+    .price-row .val { font-weight: 600; color: var(--white); }
+    .price-total { margin-top: 1rem; padding-top: 1rem; border-top: 2px solid rgba(200,134,10,0.3); }
+    .price-total .val { font-family: var(--font-display); font-size: 1.4rem; color: var(--primary-light); font-weight: 900; }
+    .price-summary .btn { width: 100%; justify-content: center; margin-top: 1.5rem; }
+    .secure-note { font-size: 0.72rem; color: rgba(253,250,244,0.4); text-align: center; margin-top: 0.75rem; }
+
+    /* Multi-step */
+    .form-step { display: none; }
+    .form-step.active { display: block; }
+    .step-nav { display: flex; gap: 1rem; margin-top: 2rem; }
+    .step.done .step-num { background: var(--accent); color: var(--white); }
+    .step::after { background: rgba(46,74,56,0.2); }
+
+    /* Step 2 - extras */
+    .addon-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 0.75rem; margin-top: 0.5rem; }
+    .addon-opt { position: relative; }
+    .addon-opt input[type=checkbox] { display: none; }
+    .addon-opt label {
+      display: flex; align-items: center; gap: 0.75rem;
+      padding: 0.9rem 1rem;
+      border: 1.5px solid rgba(46,74,56,0.15);
+      border-radius: 12px; cursor: pointer;
+      transition: all 0.2s; font-size: 0.84rem; color: var(--text);
+    }
+    .addon-opt label .a-icon { font-size: 1.4rem; }
+    .addon-opt label .a-price { margin-left: auto; color: var(--primary-dark); font-weight: 700; font-size: 0.8rem; }
+    .addon-opt input:checked + label { border-color: var(--primary); background: #fffaf0; color: var(--primary-dark); }
+
+    /* Step 3 - confirmation */
+    .confirm-card {
+      background: var(--light);
+      border-radius: 16px;
+      padding: 2rem;
+      border: 1px solid rgba(46,74,56,0.12);
+    }
+    .confirm-row { display: flex; justify-content: space-between; padding: 0.6rem 0; border-bottom: 1px solid rgba(46,74,56,0.08); font-size: 0.88rem; }
+    .confirm-row:last-child { border: none; }
+    .confirm-row .lbl { color: var(--text-muted); }
+    .confirm-row .val { font-weight: 600; color: var(--dark); }
+    .success-banner {
+      display: none; text-align: center; padding: 3rem 1.5rem;
+      background: linear-gradient(135deg,#e8f5e9,#f1f8e9);
+      border-radius: 20px; border: 2px solid #4caf50;
+    }
+    .success-banner.show { display: block; }
+    .success-banner .big-icon { font-size: 4rem; margin-bottom: 1rem; }
+    .success-banner h3 { font-family: var(--font-display); font-size: 1.6rem; color: var(--dark); margin-bottom: 0.5rem; }
+    .success-banner p { color: var(--text-muted); font-size: 0.9rem; }
+
+    @media (max-width: 900px) {
+      .visit-layout { grid-template-columns: 1fr; }
+      .price-summary { position: static; }
+      .type-options { grid-template-columns: repeat(3, 1fr); }
+      .addon-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="breadcrumb">
+    <div class="container">
+      <a href="index.html">Beranda</a>
+      <span class="sep">›</span>
+      <span class="current">Pesan Trip</span>
+    </div>
+  </div>
+  <div class="page-hero">
+    <div class="container">
+      <h1>Rancang <em>Perjalanan</em> Anda</h1>
+      <p>Isi formulir di bawah untuk mulai merencanakan perjalanan impian ke Kota Khatulistiwa.</p>
+    </div>
+  </div>
+
+  <section class="section">
+    <div class="container">
+      <div class="step-indicator" id="stepIndicator">
+        <div class="step active" id="si1"><div class="step-num">1</div><div class="step-label">Detail</div></div>
+        <div class="step" id="si2"><div class="step-num">2</div><div class="step-label">Perjalanan</div></div>
+        <div class="step" id="si3"><div class="step-num">3</div><div class="step-label">Konfirmasi</div></div>
+      </div>
+
+      <div class="visit-layout">
+        <div>
+          <!-- STEP 1: Data Diri -->
+          <div class="form-step active" id="step1">
+            <div class="form-group">
+              <label>Nama Lengkap *</label>
+              <input type="text" id="f-name" placeholder="Masukkan nama lengkap Anda">
+            </div>
+            <div class="form-group">
+              <label>Alamat Email *</label>
+              <input type="email" id="f-email" placeholder="email@anda.com">
+            </div>
+            <div class="form-group">
+              <label>Nomor WhatsApp / HP *</label>
+              <input type="tel" id="f-phone" placeholder="+62 812 3456 7890">
+            </div>
+            <div class="form-group">
+              <label>Tanggal Perjalanan *</label>
+              <input type="date" id="travel-date">
+            </div>
+            <div class="form-group">
+              <label>Jumlah Tamu</label>
+              <div class="counter-row">
+                <button class="counter-btn" onclick="changeGuests(-1)">−</button>
+                <div class="counter-val" id="guest-count">2</div>
+                <button class="counter-btn" onclick="changeGuests(1)">+</button>
+              </div>
+            </div>
+            <div class="step-nav">
+              <button class="btn btn-primary" onclick="goStep(2)">Lanjut: Pilih Perjalanan →</button>
+            </div>
+          </div>
+
+          <!-- STEP 2: Detail Perjalanan -->
+          <div class="form-step" id="step2">
+            <div class="form-group">
+              <label>Durasi Tur</label>
+              <select id="duration" onchange="calcPrice()">
+                <option value="750000">Full Day Tour (~12 jam) — Rp 750.000/orang</option>
+                <option value="450000">Half Day Tour (~6 jam) — Rp 450.000/orang</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Destinasi Utama</label>
+              <select id="f-dest">
+                <option>Kota Pontianak — Sejarah & Budaya</option>
+                <option>Susur Sungai Kapuas</option>
+                <option>Mangrove Kubu Raya</option>
+                <option>Day Trip Singkawang</option>
+                <option>Ekspedisi Danau Sentarum</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Jenis Perjalanan</label>
+              <div class="type-options">
+                <div class="type-opt">
+                  <input type="radio" name="trip-type" id="type-nature" value="Alam" checked>
+                  <label for="type-nature"><span class="icon">🌿</span>Alam</label>
+                </div>
+                <div class="type-opt">
+                  <input type="radio" name="trip-type" id="type-heritage" value="Budaya">
+                  <label for="type-heritage"><span class="icon">🏛️</span>Budaya</label>
+                </div>
+                <div class="type-opt">
+                  <input type="radio" name="trip-type" id="type-culinary" value="Kuliner">
+                  <label for="type-culinary"><span class="icon">🍜</span>Kuliner</label>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Layanan Tambahan (Add-on)</label>
+              <div class="addon-grid">
+                <div class="addon-opt">
+                  <input type="checkbox" id="add-guide" value="150000" onchange="calcPrice()">
+                  <label for="add-guide"><span class="a-icon">🎙️</span><span>Pemandu Wisata Bilingual</span><span class="a-price">+Rp 150k</span></label>
+                </div>
+                <div class="addon-opt">
+                  <input type="checkbox" id="add-photo" value="200000" onchange="calcPrice()">
+                  <label for="add-photo"><span class="a-icon">📸</span><span>Fotografer Profesional</span><span class="a-price">+Rp 200k</span></label>
+                </div>
+                <div class="addon-opt">
+                  <input type="checkbox" id="add-car" value="300000" onchange="calcPrice()">
+                  <label for="add-car"><span class="a-icon">🚙</span><span>Sewa Mobil AC</span><span class="a-price">+Rp 300k</span></label>
+                </div>
+                <div class="addon-opt">
+                  <input type="checkbox" id="add-boat" value="250000" onchange="calcPrice()">
+                  <label for="add-boat"><span class="a-icon">🛥️</span><span>Tur Perahu Klotok</span><span class="a-price">+Rp 250k</span></label>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Permintaan Khusus (opsional)</label>
+              <textarea id="f-notes" rows="3" placeholder="Misalnya: vegetarian, kursi roda, bahasa Inggris..."></textarea>
+            </div>
+            <div class="step-nav">
+              <button class="btn btn-outline" onclick="goStep(1)" style="border-color:rgba(46,74,56,0.3);color:var(--text)">← Kembali</button>
+              <button class="btn btn-primary" onclick="goStep(3)">Lanjut: Konfirmasi →</button>
+            </div>
+          </div>
+
+          <!-- STEP 3: Konfirmasi -->
+          <div class="form-step" id="step3">
+            <div class="confirm-card" id="confirmCard">
+              <div class="section-label" style="margin-bottom:1rem">Ringkasan Pemesanan</div>
+              <div class="confirm-row"><span class="lbl">Nama</span><span class="val" id="c-name">—</span></div>
+              <div class="confirm-row"><span class="lbl">Email</span><span class="val" id="c-email">—</span></div>
+              <div class="confirm-row"><span class="lbl">WhatsApp</span><span class="val" id="c-phone">—</span></div>
+              <div class="confirm-row"><span class="lbl">Tanggal</span><span class="val" id="c-date">—</span></div>
+              <div class="confirm-row"><span class="lbl">Jumlah Tamu</span><span class="val" id="c-guests">—</span></div>
+              <div class="confirm-row"><span class="lbl">Destinasi</span><span class="val" id="c-dest">—</span></div>
+              <div class="confirm-row"><span class="lbl">Jenis Tur</span><span class="val" id="c-type">—</span></div>
+              <div class="confirm-row"><span class="lbl">Addons</span><span class="val" id="c-addons">—</span></div>
+              <div class="confirm-row" style="margin-top:0.5rem;font-size:1rem">
+                <span class="lbl" style="font-weight:700;color:var(--dark)">Total Pembayaran</span>
+                <span class="val" style="color:var(--primary-dark);font-size:1.1rem" id="c-total">—</span>
+              </div>
+            </div>
+            <div class="success-banner" id="successBanner">
+              <div class="big-icon">🎉</div>
+              <h3>Pemesanan Terkirim!</h3>
+              <p>Terima kasih, <strong id="s-name"></strong>! Tim kami akan menghubungi Anda via WhatsApp / Email dalam 1×24 jam untuk konfirmasi perjalanan.</p>
+              <a href="index.html" class="btn btn-primary" style="margin-top:1.5rem;display:inline-flex">← Kembali ke Beranda</a>
+            </div>
+            <div class="step-nav" id="step3nav">
+              <button class="btn btn-outline" onclick="goStep(2)" style="border-color:rgba(46,74,56,0.3);color:var(--text)">← Kembali</button>
+              <button class="btn btn-primary" onclick="submitForm()">✅ Konfirmasi & Pesan</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="price-summary">
+          <h3>💰 Estimasi Biaya</h3>
+          <div class="price-row"><span class="label">Jenis Tur</span><span class="val" id="sum-type">Full Day</span></div>
+          <div class="price-row"><span class="label">Tarif per Orang</span><span class="val" id="sum-rate">Rp 750.000</span></div>
+          <div class="price-row"><span class="label">Jumlah Tamu</span><span class="val" id="sum-guests">2 orang</span></div>
+          <div class="price-row"><span class="label">Subtotal</span><span class="val" id="sum-sub">Rp 1.500.000</span></div>
+          <div class="price-row"><span class="label">Biaya Layanan (5%)</span><span class="val" id="sum-fee">Rp 75.000</span></div>
+          <div class="price-row price-total">
+            <span class="label" style="color:var(--primary-light);font-weight:700;font-size:0.9rem">TOTAL</span>
+            <span class="val" id="sum-total">Rp 1.575.000</span>
+          </div>
+          <button class="btn btn-primary" onclick="alert('Terima kasih! Tim kami akan menghubungi Anda segera.')">
+            Konfirmasi Trip →
+          </button>
+          <p class="secure-note">🔒 Data Anda aman dan terlindungi</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script src="js/layout.js"></script>
+  <script>
+    let guests = 2;
+    function changeGuests(delta) {
+      guests = Math.max(1, Math.min(20, guests + delta));
+      document.getElementById('guest-count').textContent = guests;
+      calcPrice();
+    }
+
+    function getAddons() {
+      const addons = [];
+      let extra = 0;
+      [['add-guide','Pemandu Bilingual',150000],['add-photo','Fotografer',200000],['add-car','Sewa Mobil',300000],['add-boat','Tur Klotok',250000]].forEach(([id,name,price])=>{
+        if(document.getElementById(id)?.checked){ addons.push(name); extra += price; }
+      });
+      return {addons, extra};
+    }
+
+    function calcPrice() {
+      const sel = document.getElementById('duration');
+      if(!sel) return;
+      const rate = parseInt(sel.value);
+      const label = sel.options[sel.selectedIndex].text.split(' (')[0];
+      const {extra} = getAddons();
+      const sub = rate * guests;
+      const total_base = sub + extra;
+      const fee = Math.round(total_base * 0.05);
+      const total = total_base + fee;
+      const fmt = n => 'Rp ' + n.toLocaleString('id-ID');
+      document.getElementById('sum-type').textContent = label;
+      document.getElementById('sum-rate').textContent = fmt(rate);
+      document.getElementById('sum-guests').textContent = guests + ' orang';
+      document.getElementById('sum-sub').textContent = fmt(sub);
+      document.getElementById('sum-fee').textContent = fmt(fee);
+      document.getElementById('sum-total').textContent = fmt(total);
+    }
+
+    function goStep(n) {
+      // Validate step 1
+      if(n === 2) {
+        const name = document.getElementById('f-name').value.trim();
+        const email = document.getElementById('f-email').value.trim();
+        const phone = document.getElementById('f-phone').value.trim();
+        const date = document.getElementById('travel-date').value;
+        if(!name || !email || !phone || !date) { alert('Harap lengkapi semua field yang wajib diisi (*)'); return; }
+      }
+      // Populate step 3 summary
+      if(n === 3) {
+        const sel = document.getElementById('duration');
+        const rate = parseInt(sel.value);
+        const {addons, extra} = getAddons();
+        const sub = rate * guests;
+        const fee = Math.round((sub+extra)*0.05);
+        const total = sub + extra + fee;
+        const fmt = v => 'Rp ' + v.toLocaleString('id-ID');
+        const tripType = document.querySelector('input[name="trip-type"]:checked')?.value || '—';
+        document.getElementById('c-name').textContent = document.getElementById('f-name').value;
+        document.getElementById('c-email').textContent = document.getElementById('f-email').value;
+        document.getElementById('c-phone').textContent = document.getElementById('f-phone').value;
+        const dateVal = document.getElementById('travel-date').value;
+        document.getElementById('c-date').textContent = dateVal ? new Date(dateVal).toLocaleDateString('id-ID',{weekday:'long',year:'numeric',month:'long',day:'numeric'}) : '—';
+        document.getElementById('c-guests').textContent = guests + ' orang';
+        document.getElementById('c-dest').textContent = document.getElementById('f-dest').value;
+        document.getElementById('c-type').textContent = tripType;
+        document.getElementById('c-addons').textContent = addons.length ? addons.join(', ') : 'Tidak ada';
+        document.getElementById('c-total').textContent = fmt(total);
+        document.getElementById('sum-total').textContent = fmt(total);
+      }
+      [1,2,3].forEach(i => {
+        document.getElementById('step'+i).classList.toggle('active', i===n);
+        const si = document.getElementById('si'+i);
+        si.classList.remove('active','done');
+        if(i < n) si.classList.add('done');
+        else if(i === n) si.classList.add('active');
+      });
+      window.scrollTo({top: 300, behavior:'smooth'});
+    }
+
+    function submitForm() {
+      const name = document.getElementById('f-name').value;
+      document.getElementById('s-name').textContent = name;
+      document.getElementById('confirmCard').style.display = 'none';
+      document.getElementById('step3nav').style.display = 'none';
+      document.getElementById('successBanner').classList.add('show');
+      // Mark all steps done
+      ['si1','si2','si3'].forEach(id => {
+        document.getElementById(id).classList.remove('active');
+        document.getElementById(id).classList.add('done');
+      });
+    }
+
+    calcPrice();
+  </script>
+</body>
+</html>

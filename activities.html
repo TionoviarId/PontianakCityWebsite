@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aktivitas di Pontianak</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .activities-hero-bg {
+      background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Kapuas_River_from_Kapuas_Kecil_junction%2C_Pontianak%2C_2019.jpg/1280px-Kapuas_River_from_Kapuas_Kecil_junction%2C_Pontianak%2C_2019.jpg');
+      background-size: cover;
+      background-position: center;
+      height: 340px;
+      position: relative;
+      display: flex;
+      align-items: flex-end;
+      overflow: hidden;
+    }
+    .activities-hero-bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, var(--dark2) 0%, transparent 60%);
+    }
+    .cat-tabs {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 2.5rem;
+    }
+    .cat-tab {
+      padding: 0.5rem 1.1rem;
+      border-radius: 20px;
+      border: 1.5px solid rgba(46,74,56,0.2);
+      background: transparent;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: var(--font-body);
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .cat-tab:hover, .cat-tab.active {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: var(--dark);
+    }
+    .activity-featured {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .activity-featured .card-img { height: 280px; }
+    .activity-big .card-img { height: 280px; }
+    .activity-badge-must {
+      position: absolute;
+      top: 12px; right: 12px;
+      background: var(--primary);
+      color: var(--dark);
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 0.25rem 0.65rem;
+      border-radius: 20px;
+    }
+    @media(max-width:700px) {
+      .activity-featured { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="breadcrumb">
+    <div class="container">
+      <a href="index.html">Beranda</a>
+      <span class="sep">›</span>
+      <span class="current">Aktivitas</span>
+    </div>
+  </div>
+
+  <div class="page-hero">
+    <div class="container">
+      <h1>Aktivitas di <em>Pontianak</em></h1>
+      <p>Dari menyaksikan fenomena matahari tepat di kepala hingga menyusuri sungai Kapuas saat senja.</p>
+    </div>
+  </div>
+
+  <section class="section">
+    <div class="container">
+      <div class="cat-tabs">
+        <button class="cat-tab active">🌟 Semua</button>
+        <button class="cat-tab">🏛️ Sejarah & Budaya</button>
+        <button class="cat-tab">🛶 Sungai & Air</button>
+        <button class="cat-tab">🌿 Alam & Hutan</button>
+        <button class="cat-tab">🛍️ Belanja</button>
+        <button class="cat-tab">👨‍👩‍👧 Keluarga</button>
+      </div>
+
+      <!-- Featured activities -->
+      <div class="activity-featured">
+        <div class="card activity-big">
+          <div class="card-img">
+            <img src="assets/images/tugu.jpeg" alt="Tugu Khatulistiwa">
+            <span class="card-badge">Wajib</span>
+            <span class="activity-badge-must">⭐ Top 1</span>
+          </div>
+          <div class="card-body">
+            <h3>Fenomena Kulminasi Matahari</h3>
+            <p>Saksikan momen magis saat matahari tepat di atas Tugu Khatulistiwa — bayangan benda menghilang total. Terjadi 2× setahun: 21-23 Maret dan 21-23 September. Gratis dan memukau.</p>
+            <div class="card-meta"><span class="tag">Alam & Sains</span><span class="price">Gratis</span></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-img">
+            <img src="assets/images/kapuas.jpeg" alt="Sungai Kapuas">
+            <span class="card-badge">Sungai</span>
+          </div>
+          <div class="card-body">
+            <h3>Susur Sungai Kapuas</h3>
+            <p>Naik klotok (perahu kayu) menikmati sungai terpanjang Indonesia saat golden hour.</p>
+            <div class="card-meta"><span class="tag">Wisata Air</span><span class="price">Rp 50k</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="cards-grid">
+        <div class="card">
+          <div class="card-img">
+            <img src="assets/images/Keraton Kadriyah & Masjid Jami.jpeg" alt="Keraton">
+            <span class="card-badge">Sejarah</span>
+          </div>
+          <div class="card-body">
+            <h3>Tur Keraton Kadriyah</h3>
+            <p>Pelajari sejarah Kesultanan Pontianak, koleksi benda kerajaan, dan arsitektur Melayu-Islam abad ke-18.</p>
+            <div class="card-meta"><span class="tag">Budaya Melayu</span><span class="price">Rp 5k</span></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-img">
+            <img src="assets/images/sentarum.jpeg" alt="Danau Sentarum">
+            <span class="card-badge">Alam Liar</span>
+          </div>
+          <div class="card-body">
+            <h3>Ekspedisi Danau Sentarum</h3>
+            <p>Taman nasional rawa air tawar terbesar di Asia — habitat orangutan, bekantan, dan ratusan spesies burung.</p>
+            <div class="card-meta"><span class="tag">Ekowisata</span><span class="price">Rp 150k+</span></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-img">
+            <img src="assets/images/singkawang.jpeg" alt="Singkawang">
+            <span class="card-badge">Day Trip</span>
+          </div>
+          <div class="card-body">
+            <h3>Day Trip ke Singkawang</h3>
+            <p>Kunjungi "Kota Seribu Kelenteng" — warisan budaya Tionghoa paling autentik di Kalimantan Barat.</p>
+            <div class="card-meta"><span class="tag">Budaya Tionghoa</span><span class="price">Rp 200k pp</span></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-img">
+            <img src="assets/images/kubu.jpeg" alt="Mangrove">
+            <span class="card-badge">Hijau</span>
+          </div>
+          <div class="card-body">
+            <h3>Wisata Mangrove Kubu Raya</h3>
+            <p>Jelajahi hutan mangrove dengan perahu sambil mengamati bekantan dan burung khas Kalimantan.</p>
+            <div class="card-meta"><span class="tag">Ekowisata</span><span class="price">Rp 35k</span></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-img">
+            <img src="assets/images/pasar.jpeg" alt="Pasar Kapuas Indah">
+            <span class="card-badge">Belanja</span>
+          </div>
+          <div class="card-body">
+            <h3>Pasar Kapuas Indah</h3>
+            <p>Pusat oleh-oleh khas Pontianak — kain tenun Dayak, kerajinan rotan, dan aneka produk lokal Kalimantan.</p>
+            <div class="card-meta"><span class="tag">Belanja</span><span class="price">Gratis masuk</span></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-img">
+            <img src="assets/images/dayak.jpeg" alt="Festival Gawai">
+            <span class="card-badge">Festival</span>
+          </div>
+          <div class="card-body">
+            <h3>Festival Gawai Dayak</h3>
+            <p>Hadiri pesta panen suku Dayak tiap Juni — tarian, musik sape, upacara adat, dan kuliner tradisional.</p>
+            <div class="card-meta"><span class="tag">Budaya Dayak</span><span class="price">Gratis</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script src="js/layout.js"></script>
+  <script>
+    document.querySelectorAll('.cat-tab').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.cat-tab').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Itinerari Pontianak</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .itin-tabs { display: flex; gap: 0.5rem; margin-bottom: 3rem; flex-wrap: wrap; }
+    .itin-tab {
+      padding: 0.6rem 1.4rem;
+      border-radius: 20px;
+      border: 2px solid rgba(46,74,56,0.15);
+      background: transparent;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: var(--font-body);
+      color: var(--text);
+      transition: all 0.2s;
+    }
+    .itin-tab:hover, .itin-tab.active {
+      background: var(--dark);
+      border-color: var(--dark);
+      color: var(--white);
+    }
+
+    .itin-layout { display: grid; grid-template-columns: 1fr 320px; gap: 3rem; }
+    .timeline { position: relative; }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 20px; top: 0; bottom: 0;
+      width: 2px;
+      background: linear-gradient(to bottom, var(--primary), rgba(200,134,10,0.1));
+    }
+    .tl-item {
+      display: flex;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+      position: relative;
+    }
+    .tl-dot {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: var(--dark);
+      font-weight: 900;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      z-index: 1;
+      font-family: var(--font-display);
+    }
+    .tl-content {
+      background: var(--white);
+      border: 1px solid rgba(46,74,56,0.1);
+      border-radius: 14px;
+      padding: 1.4rem;
+      flex: 1;
+      transition: all 0.25s;
+    }
+    .tl-content:hover { box-shadow: 0 6px 20px rgba(15,26,20,0.09); border-color: rgba(200,134,10,0.25); }
+    .tl-content .time { font-size: 0.72rem; font-weight: 600; color: var(--primary); letter-spacing: 0.07em; margin-bottom: 0.3rem; }
+    .tl-content h4 { font-family: var(--font-display); font-size: 1.05rem; color: var(--dark); margin-bottom: 0.4rem; }
+    .tl-content p { font-size: 0.83rem; color: var(--text-muted); }
+    .tl-meta { display: flex; gap: 0.75rem; margin-top: 0.75rem; flex-wrap: wrap; }
+    .tl-meta span { font-size: 0.72rem; background: var(--light2); color: var(--accent); padding: 0.18rem 0.6rem; border-radius: 10px; font-weight: 500; }
+
+    .summary-card {
+      background: var(--dark);
+      color: var(--white);
+      border-radius: 20px;
+      padding: 2rem;
+      position: sticky;
+      top: 80px;
+    }
+    .summary-card h3 { font-family: var(--font-display); font-size: 1.1rem; margin-bottom: 1.5rem; }
+    .summary-row { display: flex; justify-content: space-between; padding: 0.65rem 0; border-bottom: 1px solid rgba(253,250,244,0.08); font-size: 0.84rem; }
+    .summary-row:last-of-type { border-bottom: none; }
+    .summary-row .val { font-weight: 600; color: var(--primary-light); }
+    .summary-card .btn { width: 100%; justify-content: center; margin-top: 1.5rem; }
+
+    @media (max-width: 860px) {
+      .itin-layout { grid-template-columns: 1fr; }
+      .summary-card { position: static; }
+    }
+  </style>
+</head>
+<body>
+  <div class="breadcrumb">
+    <div class="container">
+      <a href="index.html">Beranda</a>
+      <span class="sep">›</span>
+      <span class="current">Itinerari</span>
+    </div>
+  </div>
+  <div class="page-hero">
+    <div class="container">
+      <h1>Jelajahi <em>Kota Khatulistiwa</em></h1>
+      <p>Panduan perjalanan terurasi dari lokal. Dari satu hari penuh budaya hingga petualangan alam 4 hari.</p>
+    </div>
+  </div>
+
+  <section class="section">
+    <div class="container">
+      <div class="itin-tabs">
+        <button class="itin-tab active" onclick="showItin('weekend')">🏙️ Weekend Pontianak (2 Hari)</button>
+        <button class="itin-tab" onclick="showItin('nature')">🌿 Alam & Budaya (4 Hari)</button>
+        <button class="itin-tab" onclick="showItin('heritage')">🏛️ Tur Sejarah (1 Hari)</button>
+      </div>
+
+      <!-- WEEKEND -->
+      <div id="itin-weekend" class="itin-layout">
+        <div>
+          <div class="section-label">Itinerari Weekend</div>
+          <h2 class="section-title" style="margin-bottom:2.5rem">Pontianak dalam 2 Hari</h2>
+          <div class="timeline">
+            <div class="tl-item reveal">
+              <div class="tl-dot">1</div>
+              <div class="tl-content">
+                <div class="time">HARI 1 — PAGI • 08.00</div>
+                <h4>Sarapan Mie Tiaw & Chai Kwe</h4>
+                <p>Mulai hari di Jalan Agus Salim — pusat sarapan khas Pontianak. Coba mie tiaw sapi dan chai kwe hangat.</p>
+                <div class="tl-meta"><span>Kuliner</span><span>~1 jam</span><span>Rp 25k</span></div>
+              </div>
+            </div>
+            <div class="tl-item reveal">
+              <div class="tl-dot">2</div>
+              <div class="tl-content">
+                <div class="time">HARI 1 — SIANG • 09.30</div>
+                <h4>Tugu Khatulistiwa & Museum</h4>
+                <p>Kunjungi monumen ikonik 0° lintang. Jika kebetulan 21–23 Maret/September, saksikan fenomena kulminasi yang langka!</p>
+                <div class="tl-meta"><span>Sejarah</span><span>~2 jam</span><span>Gratis</span></div>
+              </div>
+            </div>
+            <div class="tl-item reveal">
+              <div class="tl-dot">3</div>
+              <div class="tl-content">
+                <div class="time">HARI 1 — SORE • 14.00</div>
+                <h4>Keraton Kadriyah & Masjid Jami</h4>
+                <p>Jelajahi istana Kesultanan Pontianak, koleksi benda kerajaan, dan masjid tua di tepi sungai.</p>
+                <div class="tl-meta"><span>Budaya Melayu</span><span>~2 jam</span><span>Rp 5k</span></div>
+              </div>
+            </div>
+            <div class="tl-item reveal">
+              <div class="tl-dot">4</div>
+              <div class="tl-content">
+                <div class="time">HARI 1 — MALAM • 17.30</div>
+                <h4>Sunset & Ikan Bakar di Waterfront Kapuas</h4>
+                <p>Nikmati matahari terbenam di tepian Sungai Kapuas sambil menyantap ikan bakar segar. Sempurna!</p>
+                <div class="tl-meta"><span>Kuliner</span><span>~2 jam</span><span>Rp 60–100k</span></div>
+              </div>
+            </div>
+            <div class="tl-item reveal">
+              <div class="tl-dot">5</div>
+              <div class="tl-content">
+                <div class="time">HARI 2 — PAGI • 08.00</div>
+                <h4>Susur Sungai Kapuas dengan Klotok</h4>
+                <p>Naik perahu kayu tradisional menyusuri sungai, melihat kehidupan warga tepi sungai dan rumah adat.</p>
+                <div class="tl-meta"><span>Wisata Air</span><span>~2 jam</span><span>Rp 50k</span></div>
+              </div>
+            </div>
+            <div class="tl-item reveal">
+              <div class="tl-dot">6</div>
+              <div class="tl-content">
+                <div class="time">HARI 2 — SIANG • 11.00</div>
+                <h4>Belanja Oleh-Oleh di Pasar Kapuas Indah</h4>
+                <p>Kain tenun Dayak, kerajinan rotan, hingga makanan khas Pontianak sebagai buah tangan.</p>
+                <div class="tl-meta"><span>Belanja</span><span>~2 jam</span><span>Rp 100–300k</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="summary-card">
+          <h3>📋 Ringkasan Perjalanan</h3>
+          <div class="summary-row"><span>Durasi</span><span class="val">2 Hari</span></div>
+          <div class="summary-row"><span>Tempo</span><span class="val">Santai–Aktif</span></div>
+          <div class="summary-row"><span>Estimasi Biaya</span><span class="val">Rp 400k–700k</span></div>
+          <div class="summary-row"><span>Cocok Untuk</span><span class="val">Pasangan, Solo</span></div>
+          <div class="summary-row"><span>Waktu Terbaik</span><span class="val">Mar/Sep (Kulminasi)</span></div>
+          <a href="visit.html" class="btn btn-primary">Pesan Trip Ini</a>
+        </div>
+      </div>
+
+      <!-- NATURE (hidden) -->
+      <div id="itin-nature" class="itin-layout" style="display:none">
+        <div>
+          <div class="section-label">Alam & Budaya</div>
+          <h2 class="section-title" style="margin-bottom:2.5rem">Petualangan 4 Hari</h2>
+          <div class="timeline">
+            <div class="tl-item reveal"><div class="tl-dot">1</div><div class="tl-content"><div class="time">HARI 1</div><h4>Kota Pontianak — Heritage Walk</h4><p>Tugu Khatulistiwa, Keraton Kadriyah, waterfront Kapuas. Malam: kuliner di Jalan Agus Salim.</p><div class="tl-meta"><span>Kota</span><span>Full Day</span></div></div></div>
+            <div class="tl-item reveal"><div class="tl-dot">2</div><div class="tl-content"><div class="time">HARI 2</div><h4>Mangrove Kubu Raya & Bekantan</h4><p>Tur hutan mangrove dengan perahu. Amati bekantan (monyet hidung panjang) di habitat aslinya.</p><div class="tl-meta"><span>Ekowisata</span><span>Full Day</span><span>Rp 150k</span></div></div></div>
+            <div class="tl-item reveal"><div class="tl-dot">3</div><div class="tl-content"><div class="time">HARI 3</div><h4>Day Trip Singkawang</h4><p>Kota kelenteng — kuliner, budaya Tionghoa, dan pantai Pasir Panjang yang indah.</p><div class="tl-meta"><span>Budaya</span><span>Full Day</span><span>Rp 300k</span></div></div></div>
+            <div class="tl-item reveal"><div class="tl-dot">4</div><div class="tl-content"><div class="time">HARI 4</div><h4>Festival Gawai Dayak (jika musimnya)</h4><p>Atau kunjungi desa Dayak dan belajar membuat kerajinan tangan tradisional.</p><div class="tl-meta"><span>Budaya Dayak</span><span>Full Day</span></div></div></div>
+          </div>
+        </div>
+        <div class="summary-card">
+          <h3>📋 Ringkasan Perjalanan</h3>
+          <div class="summary-row"><span>Durasi</span><span class="val">4 Hari</span></div>
+          <div class="summary-row"><span>Estimasi Biaya</span><span class="val">Rp 1.5–2.5 juta</span></div>
+          <div class="summary-row"><span>Cocok Untuk</span><span class="val">Keluarga, Grup</span></div>
+          <a href="visit.html" class="btn btn-primary">Pesan Trip Ini</a>
+        </div>
+      </div>
+
+      <!-- HERITAGE (hidden) -->
+      <div id="itin-heritage" class="itin-layout" style="display:none">
+        <div>
+          <div class="section-label">Tur Sejarah</div>
+          <h2 class="section-title" style="margin-bottom:2.5rem">Heritage Walk 1 Hari</h2>
+          <div class="timeline">
+            <div class="tl-item reveal"><div class="tl-dot">1</div><div class="tl-content"><div class="time">08.00</div><h4>Sarapan & Tugu Khatulistiwa</h4><p>Mulai dari sarapan bubur pedas khas Melayu, lanjut ke Tugu Khatulistiwa.</p><div class="tl-meta"><span>Sejarah</span><span>2 jam</span><span>Gratis</span></div></div></div>
+            <div class="tl-item reveal"><div class="tl-dot">2</div><div class="tl-content"><div class="time">10.30</div><h4>Keraton Kadriyah</h4><p>Tur istana lengkap bersama pemandu. Pelajari silsilah dan benda pusaka Kesultanan Pontianak.</p><div class="tl-meta"><span>Sejarah</span><span>2 jam</span><span>Rp 5k</span></div></div></div>
+            <div class="tl-item reveal"><div class="tl-dot">3</div><div class="tl-content"><div class="time">13.00</div><h4>Makan Siang di Warung Tepi Kapuas</h4><p>Ikan bakar dan nasi khas Melayu di tepi sungai dengan pemandangan masjid tua.</p><div class="tl-meta"><span>Kuliner</span><span>1 jam</span><span>Rp 60k</span></div></div></div>
+            <div class="tl-item reveal"><div class="tl-dot">4</div><div class="tl-content"><div class="time">14.30</div><h4>Museum Provinsi Kalimantan Barat</h4><p>Koleksi artefak budaya Dayak, Melayu, dan Tionghoa. Sejarah Kalimantan dari masa prasejarah.</p><div class="tl-meta"><span>Museum</span><span>1.5 jam</span><span>Rp 5k</span></div></div></div>
+            <div class="tl-item reveal"><div class="tl-dot">5</div><div class="tl-content"><div class="time">16.30</div><h4>Sunset di Waterfront Kapuas</h4><p>Tutup hari dengan pemandangan senja yang memukau di tepi Sungai Kapuas.</p><div class="tl-meta"><span>Foto</span><span>1 jam</span><span>Gratis</span></div></div></div>
+          </div>
+        </div>
+        <div class="summary-card">
+          <h3>📋 Ringkasan Perjalanan</h3>
+          <div class="summary-row"><span>Durasi</span><span class="val">1 Hari</span></div>
+          <div class="summary-row"><span>Estimasi Biaya</span><span class="val">Rp 150–200k</span></div>
+          <div class="summary-row"><span>Cocok Untuk</span><span class="val">Semua</span></div>
+          <a href="visit.html" class="btn btn-primary">Pesan Trip Ini</a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <script src="js/layout.js"></script>
+  <script>
+    function showItin(id) {
+      ['weekend','nature','heritage'].forEach(k => {
+        document.getElementById('itin-'+k).style.display = k===id ? 'grid' : 'none';
+      });
+      document.querySelectorAll('.itin-tab').forEach((btn, i) => {
+        btn.classList.toggle('active', ['weekend','nature','heritage'][i] === id);
+      });
+    }
+  </script>
+</body>
+</html>

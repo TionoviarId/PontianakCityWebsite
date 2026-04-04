@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Budaya & Sejarah Pontianak</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .culture-hero {
+      background: linear-gradient(135deg, var(--dark) 0%, #1a0a2e 100%);
+      padding: 5rem 2rem 4rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .culture-hero::before {
+      content: '☽';
+      position: absolute;
+      font-size: 20rem;
+      opacity: 0.03;
+      right: 5%;
+      top: -30%;
+      line-height: 1;
+    }
+    .culture-hero h1 { font-family: var(--font-display); font-size: clamp(2.2rem,5vw,3.5rem); color: var(--white); margin-bottom: 0.75rem; }
+    .culture-hero h1 em { color: var(--primary-light); font-style: italic; }
+    .culture-hero p { color: rgba(253,250,244,0.65); max-width: 500px; margin: 0 auto; }
+
+    .history-timeline { position: relative; margin-top: 3rem; }
+    .history-timeline::before { content: ''; position: absolute; left: 50%; top: 0; bottom: 0; width: 2px; background: linear-gradient(to bottom, var(--primary), transparent); }
+    .ht-item {
+      display: flex;
+      gap: 2rem;
+      margin-bottom: 3rem;
+      position: relative;
+    }
+    .ht-item:nth-child(even) { flex-direction: row-reverse; }
+    .ht-item::before {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 20px;
+      width: 14px; height: 14px;
+      background: var(--primary);
+      border-radius: 50%;
+      transform: translateX(-50%);
+      z-index: 1;
+    }
+    .ht-content {
+      width: 45%;
+      background: var(--white);
+      border: 1px solid rgba(46,74,56,0.1);
+      border-radius: 14px;
+      padding: 1.5rem;
+    }
+    .ht-item:nth-child(odd) .ht-content { margin-left: auto; }
+    .ht-content .year { font-family: var(--font-display); font-size: 1.5rem; font-weight: 900; color: var(--primary); line-height: 1; margin-bottom: 0.5rem; }
+    .ht-content h3 { font-family: var(--font-display); font-size: 1.05rem; color: var(--dark); margin-bottom: 0.4rem; }
+    .ht-content p { font-size: 0.83rem; color: var(--text-muted); }
+    .ht-spacer { width: 45%; }
+
+    .culture-trio {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-top: 3rem;
+    }
+    .culture-card {
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid rgba(46,74,56,0.1);
+      transition: all 0.3s;
+    }
+    .culture-card:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(15,26,20,0.12); }
+    .culture-card .cc-header {
+      padding: 2rem;
+      text-align: center;
+    }
+    .culture-card:nth-child(1) .cc-header { background: linear-gradient(135deg, #0a3d2e, #1a6b5a); }
+    .culture-card:nth-child(2) .cc-header { background: linear-gradient(135deg, #1a0a2e, #4a1a7a); }
+    .culture-card:nth-child(3) .cc-header { background: linear-gradient(135deg, #3d1a0a, #b8621a); }
+    .culture-card .cc-emoji { font-size: 3rem; margin-bottom: 0.75rem; }
+    .culture-card .cc-title { font-family: var(--font-display); color: var(--white); font-size: 1.2rem; font-weight: 700; }
+    .culture-card .cc-sub { color: rgba(253,250,244,0.6); font-size: 0.78rem; }
+    .culture-card .cc-body { padding: 1.4rem; }
+    .culture-card .cc-body p { font-size: 0.84rem; color: var(--text-muted); }
+
+    .etiquette-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.25rem; margin-top: 2.5rem; }
+    .eq-item {
+      display: flex;
+      gap: 1rem;
+      background: var(--light);
+      border-radius: 12px;
+      padding: 1.25rem;
+    }
+    .eq-icon { font-size: 1.8rem; flex-shrink: 0; }
+    .eq-item h4 { font-family: var(--font-display); font-size: 0.95rem; color: var(--dark); margin-bottom: 0.3rem; }
+    .eq-item p { font-size: 0.8rem; color: var(--text-muted); }
+
+    .quote-block {
+      background: var(--dark2);
+      border-radius: 20px;
+      padding: 3rem;
+      text-align: center;
+      margin-top: 3rem;
+      position: relative;
+    }
+    .quote-block::before { content: '"'; font-family: var(--font-display); font-size: 8rem; color: rgba(200,134,10,0.1); position: absolute; top: -1rem; left: 1.5rem; line-height: 1; }
+    .quote-block blockquote { font-family: var(--font-display); font-size: 1.4rem; color: var(--white); font-style: italic; line-height: 1.5; }
+    .quote-block cite { display: block; margin-top: 1rem; font-size: 0.8rem; color: var(--primary-light); }
+
+    @media (max-width: 900px) {
+      .history-timeline::before { left: 20px; }
+      .ht-item, .ht-item:nth-child(even) { flex-direction: column; }
+      .ht-item::before { left: 20px; }
+      .ht-content, .ht-item:nth-child(odd) .ht-content { width: 100%; margin-left: 3rem; }
+      .ht-spacer { display: none; }
+      .culture-trio { grid-template-columns: 1fr; }
+      .etiquette-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="breadcrumb">
+    <div class="container">
+      <a href="index.html">Beranda</a>
+      <span class="sep">›</span>
+      <span class="current">Budaya</span>
+    </div>
+  </div>
+  <div class="culture-hero">
+    <div class="section-label" style="color:var(--primary-light)">Warisan & Harmoni</div>
+    <h1>Tiga Suku, <em>Satu Kota</em></h1>
+    <p>Pontianak adalah simbol toleransi — perpaduan budaya Melayu, Dayak, dan Tionghoa yang hidup berdampingan di tepian Sungai Kapuas selama berabad-abad.</p>
+  </div>
+
+  <!-- History -->
+  <section class="section">
+    <div class="container">
+      <div class="section-label">Sejarah</div>
+      <h2 class="section-title">Perjalanan Kota Pontianak</h2>
+      <p class="section-sub">Dari pemukiman di pertemuan sungai hingga kota yang berdiri tepat di garis nol derajat.</p>
+      <div class="history-timeline">
+        <div class="ht-item reveal">
+          <div class="ht-content">
+            <div class="year">1771</div>
+            <h3>Berdirinya Kesultanan Pontianak</h3>
+            <p>Sultan Syarif Abdurrahman Al-Qadrie mendirikan Kesultanan Pontianak di pertemuan Sungai Kapuas dan Sungai Landak. Nama Pontianak berasal dari legenda kuntilanak di hutan lebat.</p>
+          </div>
+          <div class="ht-spacer"></div>
+        </div>
+        <div class="ht-item reveal">
+          <div class="ht-spacer"></div>
+          <div class="ht-content">
+            <div class="year">1800-an</div>
+            <h3>Era Pedagang Tionghoa</h3>
+            <p>Komunitas Tionghoa Hakka dan Teochew datang sebagai penambang emas. Mereka mendirikan kongsi dagang, klenteng, dan membangun fondasi budaya multikultural Pontianak.</p>
+          </div>
+        </div>
+        <div class="ht-item reveal">
+          <div class="ht-content">
+            <div class="year">1928</div>
+            <h3>Pengukuran Resmi Khatulistiwa</h3>
+            <p>Peneliti Belanda secara resmi mengukur dan menandai titik tepat Garis Khatulistiwa melewati Pontianak, menjadikannya satu-satunya ibu kota provinsi di Indonesia yang dilalui garis ini.</p>
+          </div>
+          <div class="ht-spacer"></div>
+        </div>
+        <div class="ht-item reveal">
+          <div class="ht-spacer"></div>
+          <div class="ht-content">
+            <div class="year">1945–kini</div>
+            <h3>Pontianak Modern</h3>
+            <p>Bergabung dengan Republik Indonesia, Pontianak berkembang jadi ibu kota Kalimantan Barat dengan mempertahankan kekayaan budaya tiga suku dalam satu kota yang harmonis.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Three Cultures -->
+  <section class="section section-dark">
+    <div class="container">
+      <div class="section-label" style="color:var(--primary-light)">Tiga Pilar Budaya</div>
+      <h2 class="section-title">Kekayaan Budaya Pontianak</h2>
+      <div class="culture-trio">
+        <div class="culture-card reveal">
+          <div class="cc-header">
+            <div class="cc-emoji">🌙</div>
+            <div class="cc-title">Budaya Melayu</div>
+            <div class="cc-sub">Keraton & Islam</div>
+          </div>
+          <div class="cc-body">
+            <p>Warisan Kesultanan Pontianak yang kaya — dari arsitektur Keraton Kadriyah, batik Melayu, hingga alunan musik hadrah dan tarian Zapin yang anggun. Bahasa Melayu menjadi lingua franca kota.</p>
+          </div>
+        </div>
+        <div class="culture-card reveal">
+          <div class="cc-header">
+            <div class="cc-emoji">🦅</div>
+            <div class="cc-title">Budaya Dayak</div>
+            <div class="cc-sub">Alam & Adat</div>
+          </div>
+          <div class="cc-body">
+            <p>Suku asli Kalimantan dengan kekayaan tato tradisional, ukiran kayu, tenunan ikat yang indah, dan Festival Gawai yang meriah. Musik sape dan tarian Giring-Giring menjadi ikon budaya Borneo.</p>
+          </div>
+        </div>
+        <div class="culture-card reveal">
+          <div class="cc-header">
+            <div class="cc-emoji">🏮</div>
+            <div class="cc-title">Budaya Tionghoa</div>
+            <div class="cc-sub">Kelenteng & Tradisi</div>
+          </div>
+          <div class="cc-body">
+            <p>Komunitas Hakka dan Teochew yang telah menetap berabad-abad. Cap Go Meh Pontianak adalah salah satu terbesar di Indonesia. Ratusan klenteng, seni barongsai, dan kuliner khas mewarnai kota.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Etiquette -->
+  <section class="section">
+    <div class="container">
+      <div class="section-label">Etika Wisata</div>
+      <h2 class="section-title">Etiket Berkunjung ke Pontianak</h2>
+      <p class="section-sub">Pontianak adalah kota multikultural yang menjunjung tinggi toleransi. Beberapa hal penting untuk dihormati:</p>
+      <div class="etiquette-grid">
+        <div class="eq-item reveal">
+          <div class="eq-icon">🕌</div>
+          <div>
+            <h4>Hormati Waktu Sholat</h4>
+            <p>Saat azan berkumandang, beberapa warung mungkin tutup sejenak. Berpakaian sopan saat mengunjungi Keraton atau Masjid Jami.</p>
+          </div>
+        </div>
+        <div class="eq-item reveal">
+          <div class="eq-icon">🏮</div>
+          <div>
+            <h4>Etiket di Klenteng</h4>
+            <p>Berpakaian tertutup dan sopan. Jangan menyentuh altar atau benda ritual tanpa izin. Dipersilakan memotret dengan sopan.</p>
+          </div>
+        </div>
+        <div class="eq-item reveal">
+          <div class="eq-icon">🦅</div>
+          <div>
+            <h4>Tamu di Rumah Adat Dayak</h4>
+            <p>Lepas alas kaki sebelum masuk. Terima jamuan tuan rumah dengan tangan kanan. Mintalah izin sebelum memotret upacara adat.</p>
+          </div>
+        </div>
+        <div class="eq-item reveal">
+          <div class="eq-icon">🤝</div>
+          <div>
+            <h4>Salam & Sapaan</h4>
+            <p>"Assalamualaikum" untuk saudara Muslim. "Selamat pagi/siang/sore" universal untuk semua. Senyum tulus selalu disambut hangat!</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="quote-block reveal">
+        <blockquote>"Pontianak adalah bukti nyata bahwa perbedaan adalah kekuatan, bukan kelemahan."</blockquote>
+        <cite>— Pepatah Kalimantan Barat</cite>
+      </div>
+    </div>
+  </section>
+
+  <script src="js/layout.js"></script>
+</body>
+</html>

@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bantuan Pengunjung Pontianak</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .emergency-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; margin-top: 2.5rem; }
+    .emg-card {
+      background: var(--white);
+      border: 2px solid rgba(46,74,56,0.1);
+      border-radius: 16px;
+      padding: 1.75rem;
+      text-align: center;
+      transition: all 0.25s;
+    }
+    .emg-card.primary { border-color: var(--primary); background: #fffaf0; }
+    .emg-card:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(15,26,20,0.1); }
+    .emg-card .emg-icon { font-size: 2.5rem; margin-bottom: 0.75rem; }
+    .emg-card h3 { font-family: var(--font-display); font-size: 1rem; color: var(--dark); margin-bottom: 0.25rem; }
+    .emg-card .number {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      font-weight: 900;
+      color: var(--primary);
+      margin: 0.5rem 0;
+    }
+    .emg-card p { font-size: 0.78rem; color: var(--text-muted); margin-bottom: 1rem; }
+    .call-btn {
+      display: inline-block;
+      background: var(--dark);
+      color: var(--white);
+      padding: 0.5rem 1.2rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+    .call-btn:hover { background: var(--primary); color: var(--dark); }
+
+    .search-bar {
+      display: flex;
+      gap: 0;
+      max-width: 540px;
+      margin: 2rem auto 0;
+    }
+    .search-bar input {
+      flex: 1;
+      padding: 0.9rem 1.2rem;
+      border: 2px solid rgba(46,74,56,0.15);
+      border-right: none;
+      border-radius: 30px 0 0 30px;
+      font-size: 0.9rem;
+      outline: none;
+      font-family: var(--font-body);
+      color: var(--text);
+    }
+    .search-bar button {
+      padding: 0.9rem 1.5rem;
+      background: var(--dark);
+      color: var(--white);
+      border: none;
+      border-radius: 0 30px 30px 0;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: var(--font-body);
+    }
+
+    .service-tabs { display: flex; gap: 0.75rem; margin: 2rem 0; flex-wrap: wrap; }
+    .svc-tab {
+      padding: 0.5rem 1.1rem;
+      border-radius: 20px;
+      border: 1.5px solid rgba(46,74,56,0.15);
+      background: transparent;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: var(--font-body);
+      color: var(--text);
+      transition: all 0.2s;
+    }
+    .svc-tab:hover, .svc-tab.active { background: var(--dark); border-color: var(--dark); color: var(--white); }
+
+    .faq-list { margin-top: 2rem; }
+    .faq-item {
+      border: 1px solid rgba(46,74,56,0.1);
+      border-radius: 12px;
+      margin-bottom: 0.75rem;
+      overflow: hidden;
+    }
+    .faq-q {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.25rem 1.5rem;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: var(--dark);
+      background: var(--white);
+      transition: background 0.2s;
+    }
+    .faq-q:hover { background: var(--light); }
+    .faq-q .chevron { transition: transform 0.3s; color: var(--primary); font-size: 1.1rem; }
+    .faq-q.open .chevron { transform: rotate(180deg); }
+    .faq-a {
+      display: none;
+      padding: 0 1.5rem 1.25rem;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+      background: var(--white);
+    }
+    .faq-a.show { display: block; }
+
+    .chatbot-section {
+      background: var(--dark2);
+      border-radius: 24px;
+      padding: 2rem;
+      margin-top: 3rem;
+      border: 1px solid rgba(200,134,10,0.2);
+    }
+    .chatbot-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1.25rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid rgba(253,250,244,0.1);
+    }
+    .bot-avatar {
+      width: 42px; height: 42px;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem;
+    }
+    .bot-info h4 { font-family: var(--font-display); color: var(--white); font-size: 0.95rem; }
+    .bot-status { font-size: 0.72rem; color: #4caf50; font-weight: 600; }
+    .chat-messages {
+      height: 300px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      padding-right: 0.25rem;
+      margin-bottom: 1rem;
+    }
+    .chat-messages::-webkit-scrollbar { width: 4px; }
+    .chat-messages::-webkit-scrollbar-thumb { background: rgba(200,134,10,0.3); border-radius: 4px; }
+    .msg { display: flex; gap: 0.6rem; }
+    .msg.user { flex-direction: row-reverse; }
+    .msg-bubble {
+      max-width: 80%;
+      padding: 0.7rem 1rem;
+      border-radius: 16px;
+      font-size: 0.84rem;
+      line-height: 1.5;
+    }
+    .msg.bot .msg-bubble {
+      background: rgba(253,250,244,0.08);
+      color: rgba(253,250,244,0.88);
+      border-radius: 4px 16px 16px 16px;
+    }
+    .msg.user .msg-bubble {
+      background: var(--primary);
+      color: var(--dark);
+      font-weight: 500;
+      border-radius: 16px 4px 16px 16px;
+    }
+    .msg-avatar {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      background: var(--primary);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.8rem;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .msg.user .msg-avatar { background: rgba(253,250,244,0.15); }
+    .chat-input-row {
+      display: flex;
+      gap: 0.5rem;
+    }
+    .chat-input-row input {
+      flex: 1;
+      padding: 0.8rem 1.1rem;
+      border-radius: 30px;
+      border: 1.5px solid rgba(200,134,10,0.3);
+      background: rgba(253,250,244,0.06);
+      color: var(--white);
+      font-size: 0.88rem;
+      font-family: var(--font-body);
+      outline: none;
+    }
+    .chat-input-row input::placeholder { color: rgba(253,250,244,0.4); }
+    .chat-input-row button {
+      padding: 0.8rem 1.2rem;
+      background: var(--primary);
+      border: none;
+      border-radius: 30px;
+      color: var(--dark);
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 0.88rem;
+    }
+    .chat-input-row button:disabled { opacity: 0.5; cursor: not-allowed; }
+    .typing-dot { display: inline-flex; gap: 3px; align-items: center; }
+    .typing-dot span {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: rgba(253,250,244,0.5);
+      animation: blink 1.2s infinite;
+    }
+    .typing-dot span:nth-child(2) { animation-delay: 0.2s; }
+    .typing-dot span:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes blink { 0%,80%,100%{opacity:0.2} 40%{opacity:1} }
+    .quick-replies { display: flex; gap: 0.4rem; flex-wrap: wrap; margin-top: 0.5rem; }
+    .qr-btn {
+      padding: 0.3rem 0.8rem;
+      background: rgba(200,134,10,0.15);
+      border: 1px solid rgba(200,134,10,0.3);
+      border-radius: 16px;
+      font-size: 0.76rem;
+      color: var(--primary-light);
+      cursor: pointer;
+      font-family: var(--font-body);
+      transition: all 0.2s;
+    }
+    .qr-btn:hover { background: rgba(200,134,10,0.3); }
+    @media (max-width: 700px) {
+      .emergency-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="breadcrumb">
+    <div class="container">
+      <a href="index.html">Beranda</a>
+      <span class="sep">›</span>
+      <span class="current">Bantuan</span>
+    </div>
+  </div>
+  <div class="page-hero">
+    <div class="container">
+      <h1>Bantuan <em>Pengunjung</em></h1>
+      <p>Bantuan 24/7 untuk wisatawan di Kota Khatulistiwa. Kontak darurat, FAQ, dan panduan lengkap.</p>
+      <div class="search-bar">
+        <input type="text" placeholder="Cari info: cuaca, rumah sakit, wisata...">
+        <button>Cari</button>
+      </div>
+    </div>
+  </div>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-label">Kontak Darurat</div>
+      <h2 class="section-title">Nomor Penting Pontianak</h2>
+      <div class="emergency-grid">
+        <div class="emg-card primary reveal">
+          <div class="emg-icon">🆘</div>
+          <h3>Command Center Terpadu</h3>
+          <div class="number">112</div>
+          <p>Polisi, Pemadam, Ambulans — satu nomor untuk semua darurat. Gratis 24/7.</p>
+          <a href="tel:112" class="call-btn">📞 Hubungi Sekarang</a>
+        </div>
+        <div class="emg-card reveal">
+          <div class="emg-icon">🚑</div>
+          <h3>Ambulans (PMI Kalbar)</h3>
+          <div class="number">118</div>
+          <p>Layanan ambulans Palang Merah Indonesia wilayah Kalimantan Barat.</p>
+          <a href="tel:118" class="call-btn">📞 Hubungi</a>
+        </div>
+        <div class="emg-card reveal">
+          <div class="emg-icon">👮</div>
+          <h3>Polresta Pontianak</h3>
+          <div class="number">110</div>
+          <p>Polres Kota Pontianak untuk pelaporan kejahatan, kecelakaan, dan keamanan.</p>
+          <a href="tel:110" class="call-btn">📞 Hubungi</a>
+        </div>
+      </div>
+
+      <div class="info-box reveal" style="margin-top:2rem">
+        <h3>🏥 Rumah Sakit Terdekat</h3>
+        <p><strong>RS Antonius Pontianak</strong> — Jl. Komyos Sudarso (RS swasta terbaik) · (0561) 732063<br>
+        <strong>RSUD dr. Soedarso</strong> — RS Pemerintah Utama Kalimantan Barat · (0561) 737701<br>
+        <strong>RS St. Vincentius</strong> — Jl. KH Ahmad Dahlan · (0561) 734094</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section section-dark">
+    <div class="container">
+      <div class="section-label" style="color:var(--primary-light)">Pertanyaan Umum</div>
+      <h2 class="section-title">FAQ Wisatawan Pontianak</h2>
+      <div class="service-tabs">
+        <button class="svc-tab active">Semua</button>
+        <button class="svc-tab">✈️ Transportasi</button>
+        <button class="svc-tab">☀️ Cuaca</button>
+        <button class="svc-tab">🔒 Keamanan</button>
+        <button class="svc-tab">💊 Kesehatan</button>
+      </div>
+      <div class="faq-list">
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">
+            <span>Bagaimana cuaca di Pontianak?</span>
+            <span class="chevron">▾</span>
+          </div>
+          <div class="faq-a">Pontianak beriklim tropis panas dan lembab sepanjang tahun, dengan suhu 28–34°C. Kelembaban tinggi (85%+). Hujan bisa turun kapan saja, terutama sore hari. Bawalah pakaian ringan, tabir surya, dan payung kecil. Tidak ada musim dingin atau salju!</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">
+            <span>Kapan waktu terbaik mengunjungi Pontianak?</span>
+            <span class="chevron">▾</span>
+          </div>
+          <div class="faq-a">Pontianak bisa dikunjungi kapan saja. Namun waktu terbaik adalah saat fenomena Kulminasi Matahari — 21-23 Maret dan 21-23 September, ketika matahari tepat di atas Tugu Khatulistiwa dan bayangan benda menghilang. Jika ingin menyaksikan Cap Go Meh terbesar, kunjungi saat Tahun Baru Tionghoa (Januari/Februari).</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">
+            <span>Apakah Pontianak aman untuk wisatawan?</span>
+            <span class="chevron">▾</span>
+          </div>
+          <div class="faq-a">Pontianak umumnya aman untuk wisatawan. Seperti kota besar lainnya, tetap waspada terhadap pencopetan di keramaian. Hindari berjalan sendirian di gang sepi malam hari. Simpan dokumen penting di hotel. Gunakan Gojek/Grab daripada ojek tidak resmi untuk keamanan lebih.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">
+            <span>Bagaimana cara dari Bandara Supadio ke pusat kota?</span>
+            <span class="chevron">▾</span>
+          </div>
+          <div class="faq-a">Dari Bandara Internasional Supadio (PNK) ke pusat kota Pontianak berjarak sekitar 17 km. Cara termudah: pesan GrabCar/Gojek langsung dari aplikasi (~Rp 60-80k, 25-40 menit). Taksi resmi bandara juga tersedia (~Rp 100k). Shuttle bus bandara tersedia ke beberapa hotel besar.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">
+            <span>Apakah ada vaksinasi yang diperlukan?</span>
+            <span class="chevron">▾</span>
+          </div>
+          <div class="faq-a">Tidak ada vaksinasi wajib khusus untuk mengunjungi Pontianak. Namun sangat disarankan: vaksin Hepatitis A dan B, Tifoid, dan pastikan vaksin rutin (MMR, DPT) sudah lengkap. Gunakan obat nyamuk untuk mencegah malaria dan demam berdarah, terutama jika berencana ke hutan atau desa terpencil.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Chatbot AI -->
+  <section class="section">
+    <div class="container">
+      <div class="section-label">Chatbot AI</div>
+      <h2 class="section-title">Asisten Virtual Pontianak</h2>
+      <p style="color:var(--text-muted);font-size:0.92rem;margin-bottom:0">Tanyakan apa saja tentang Pontianak — cuaca, kuliner, transportasi, budaya, dan lainnya. Tersedia 24/7 dalam Bahasa Indonesia & English.</p>
+      <div class="chatbot-section">
+        <div class="chatbot-header">
+          <div class="bot-avatar">🦅</div>
+          <div class="bot-info">
+            <h4>Kapuas — Asisten Wisata Pontianak</h4>
+            <div class="bot-status">● Online 24/7</div>
+          </div>
+        </div>
+        <div class="chat-messages" id="chatMessages">
+          <div class="msg bot">
+            <div class="msg-avatar">🦅</div>
+            <div>
+              <div class="msg-bubble">Halo! Saya Kapuas, asisten wisata Kota Khatulistiwa 🌟 Saya siap membantu Anda merencanakan perjalanan ke Pontianak. Tanyakan soal destinasi, kuliner, transportasi, atau apa saja!</div>
+              <div class="quick-replies">
+                <button class="qr-btn" onclick="sendQuick('Apa destinasi terbaik di Pontianak?')">🏛️ Destinasi terbaik</button>
+                <button class="qr-btn" onclick="sendQuick('Kuliner khas Pontianak apa saja?')">🍜 Kuliner khas</button>
+                <button class="qr-btn" onclick="sendQuick('Bagaimana cara ke Pontianak?')">✈️ Cara ke Pontianak</button>
+                <button class="qr-btn" onclick="sendQuick('Kapan waktu terbaik ke Pontianak?')">📅 Waktu terbaik</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="chat-input-row">
+          <input type="text" id="chatInput" placeholder="Tanyakan tentang Pontianak..." onkeydown="if(event.key==='Enter')sendChat()">
+          <button id="sendBtn" onclick="sendChat()">Kirim →</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script src="js/layout.js"></script>
+  <script>
+    function toggleFaq(el) {
+      el.classList.toggle('open');
+      el.nextElementSibling.classList.toggle('show');
+    }
+    document.querySelectorAll('.svc-tab').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.svc-tab').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+      });
+    });
+
+    const chatHistory = [];
+
+    function addMsg(role, html, isHTML = false) {
+      const box = document.getElementById('chatMessages');
+      const isBot = role === 'bot';
+      const div = document.createElement('div');
+      div.className = 'msg ' + role;
+      div.innerHTML = `
+        <div class="msg-avatar">${isBot ? '🦅' : '👤'}</div>
+        <div class="msg-bubble">${isHTML ? html : html.replace(/</g,'&lt;')}</div>`;
+      box.appendChild(div);
+      box.scrollTop = box.scrollHeight;
+    }
+
+    function addTyping() {
+      const box = document.getElementById('chatMessages');
+      const div = document.createElement('div');
+      div.className = 'msg bot'; div.id = 'typingMsg';
+      div.innerHTML = `<div class="msg-avatar">🦅</div><div class="msg-bubble"><div class="typing-dot"><span></span><span></span><span></span></div></div>`;
+      box.appendChild(div);
+      box.scrollTop = box.scrollHeight;
+    }
+
+    function removeTyping() {
+      const t = document.getElementById('typingMsg');
+      if (t) t.remove();
+    }
+
+    async function sendChat() {
+      const input = document.getElementById('chatInput');
+      const btn = document.getElementById('sendBtn');
+      const text = input.value.trim();
+      if (!text) return;
+      input.value = '';
+      btn.disabled = true;
+      addMsg('user', text);
+      chatHistory.push({ role: 'user', content: text });
+      addTyping();
+
+      try {
+        const res = await fetch('https://api.anthropic.com/v1/messages', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            model: 'claude-sonnet-4-20250514',
+            max_tokens: 1000,
+            system: `Kamu adalah Kapuas, asisten wisata virtual untuk Kota Pontianak, Kalimantan Barat, Indonesia. 
+Kamu sangat bersemangat dan ramah membantu wisatawan. 
+Fokus menjawab pertanyaan seputar: destinasi wisata Pontianak, kuliner khas (mie tiaw, bubur pedas, pisang goreng, dll), transportasi, budaya Melayu/Dayak/Tionghoa, akomodasi, event (Kulminasi Matahari, Gawai Dayak, Cap Go Meh), dan tips perjalanan.
+Jawab dalam bahasa yang sama dengan pertanyaan (Indonesia atau English).
+Jawaban singkat dan informatif, maksimal 3 paragraf. Gunakan emoji secukupnya agar menarik.`,
+            messages: chatHistory
+          })
+        });
+        const data = await res.json();
+        const reply = data.content?.[0]?.text || 'Maaf, saya tidak bisa menjawab saat ini. Silakan coba lagi!';
+        removeTyping();
+        chatHistory.push({ role: 'assistant', content: reply });
+        addMsg('bot', reply.replace(/\n/g, '<br>'), true);
+      } catch (e) {
+        removeTyping();
+        addMsg('bot', 'Maaf, terjadi gangguan koneksi. Silakan coba lagi dalam beberapa saat 🙏');
+      }
+      btn.disabled = false;
+      document.getElementById('chatInput').focus();
+    }
+
+    function sendQuick(text) {
+      document.getElementById('chatInput').value = text;
+      sendChat();
+    }
+  </script>
+</body>
+</html>
